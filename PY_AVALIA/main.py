@@ -1,18 +1,24 @@
 import pygame
+import pygame.mixer
 from tkinter import Tk, simpledialog
 import json
+
 pygame.init()
+pygame.mixer.init()
+
 fundo = pygame.image.load("space.png")
 tamanho = 1100, 700
 tela = pygame.display.set_mode((tamanho))
 pygame.display.set_caption("Space Marker")
 fundo = pygame.image.load("space.png")
+
 def obter_nome_estrela(posicao_mouse):
     tela = Tk()
     tela.withdraw()
     NameStar = simpledialog.askstring("Nome da Estrela", "Digite o nome da estrela:")
     tela.destroy()
     return NameStar
+
 def SaveTags():
     try:
         with open("tags.json", "w") as arquivo:
@@ -20,6 +26,7 @@ def SaveTags():
         print("Tags successfully saved!")
     except Exception as e:
         print("Error saving tags!", str(e))
+
 def carregar_marcacoes():
     global estrelas_marcadas
     try:
@@ -29,25 +36,33 @@ def carregar_marcacoes():
         estrelas_marcadas = []
     except Exception as e:
         print("Erro ao carregar as marcações:", str(e))
+
 def excluir_marcacoes():
     global estrelas_marcadas
     estrelas_marcadas = []
+
 estrelas_marcadas = []
 rodando = True
+
+pygame.mixer.music.load("Space_Machine_Power.mp3")
+pygame.mixer.music.play(-1)
+
 while rodando:
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
-            SaveTags() 
+            SaveTags()
+            pygame.mixer.music.stop()
             rodando = False
         elif evento.type == pygame.MOUSEBUTTONDOWN:
-            if evento.button == 1: 
+            if evento.button == 1:
                 posicao_mouse = pygame.mouse.get_pos()
                 nome_estrela = obter_nome_estrela(posicao_mouse)
                 estrela = (nome_estrela if nome_estrela else "Desconhecido", posicao_mouse)
                 estrelas_marcadas.append(estrela)
                 print("Nome da estrela:", estrela[0])
                 print("Posição do clique:", estrela[1])
-    tela.fill((0, 0, 0))  
+
+    tela.fill((0, 0, 0))
     tela.blit(fundo, (0, 0))
     for i, estrela in enumerate(estrelas_marcadas):
         pygame.draw.circle(tela, (255,255,255), estrela[1], 2)  
