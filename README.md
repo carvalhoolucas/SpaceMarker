@@ -1,4 +1,4 @@
 # SpaceMarker
 A star marker, that's all.
 
-Autoria de: Iasmin Souto e Lucas Ramos.
+Autoria de: Lucas Ramos RA:1134830 e Iasmina Souto RA:1135075.
